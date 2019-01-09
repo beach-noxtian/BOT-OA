@@ -33,9 +33,10 @@ from linebot.models import (
 app = Flask(__name__)
 
 # Channel Access Token
-line_bot_api = LineBotApi('HUXFkn4BCFbT0LtLMfxsay8QyT5sLgRXp0RXWOah1AZRPT1AKC4ndzYeGQMvQJdArGvnZok5plFxF/JwJlciCxlvn4Z4Q2/UkTBpsBjVNfmiMqa659Mwy6ToTILl8LkgFJIrkxw6uX0Kqcl01HD7iAdB04t89/1O/w1cDnyilFU=')
+auth_Token = "0lcg3ZYOuhGxczmYWWZb+R7LXHeCQAIm21/yur8nvbJWq7HHQ+S/NmnnAtYT3P8g8+z3UBl8ok/Rj6/mdXmYXVjSIjnlQ2j/QjS8Zfe0JbJKbldrE+EcRA9Tw7AORtRq0XzJB3nvY40OfH+IfFOZPFGUYhWQfeY8sLGRXgo3xvw="
+client = LineBotApi(auth_Token)
 # Channel Secret
-handler = WebhookHandler('9edf38201e0640e2f181873ebc692d61')
+handler = WebhookHandler('266e5489fc2b7e93fe1c49a35654c016')
 #===========[ NOTE SAVER ]=======================
 notes = {}
 
@@ -59,23 +60,23 @@ def handle_message(event):
 #=====[ LEAVE GROUP OR ROOM ]==========[ ARSYBAI ]======================
     if text == 'bye':
         if isinstance(event.source, SourceGroup):
-            line_bot_api.reply_message(
+            client.reply_message(
                 event.reply_token, TextSendMessage(text='Leaving group'))
-            line_bot_api.leave_group(event.source.group_id)
+            client.leave_group(event.source.group_id)
         elif isinstance(event.source, SourceRoom):
-            line_bot_api.reply_message(
+            client.reply_message(
                 event.reply_token, TextSendMessage(text='Leaving group'))
-            line_bot_api.leave_room(event.source.room_id)
+            client.leave_room(event.source.room_id)
         else:
-            line_bot_api.reply_message(
+            client.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't leave from 1:1 chat"))
     elif text == "kickpart":
         groupId = event.source.group_id
         contactIds = "ue76ba731fe83a3e5af23eaa458157d5c"
-        line_bot_api.kickoutFromGroup(0, groupId, contactIds)
+        client.kickoutFromGroup(0, groupId, contactIds)
     elif text == "/test":
-        line_bot_api.reply_message(sender, TextSendMessage(text="Test pass"))
+        client.reply_message(sender, TextSendMessage(text="Test pass"))
 #===================================================
     elif 'gambar' in text:
         separate = text.split(" ")
@@ -95,7 +96,7 @@ def handle_message(event):
             preview_image_url=path
         )
 
-        line_bot_api.reply_message(
+        client.reply_message(
             event.reply_token,
             image_message
         )
